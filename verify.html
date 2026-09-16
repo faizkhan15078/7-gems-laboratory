@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report Verification | 7 Gems Laboratory</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+  <a class="brand" href="index.html"><span class="mark">7</span><span><b>7 GEMS</b><small>LABORATORY</small></span></a>
+  <nav><a href="index.html">Home</a><a href="index.html#about">About Us</a><a href="index.html#services">Services</a><a class="active" href="verify.html">Report Verification</a></nav>
+  <a class="outline-btn" href="index.html#contact">Contact</a>
+</header>
+
+<section class="verify-hero"><p class="eyebrow">7 GEMS LABORATORY</p><h1>Report Verification</h1><p>Verify the authenticity of your gemstone report.</p></section>
+
+<main class="verify-wrap">
+  <section class="search-box">
+    <div class="shield">✓</div><div><h2>Verify Your Gemstone Report</h2><p>Enter your report / certificate number to check its details.</p></div>
+    <form id="verifyForm"><input id="reportNo" value="7GL-2026-000123" placeholder="e.g. 7GL-2026-000123" required><button class="gold-btn" type="submit">Verify Report</button></form>
+    <small>Demo report number: 7GL-2026-000123</small>
+  </section>
+
+  <section id="result" class="result verified">
+    <div class="result-head"><span>✓ Report Found & Verified</span><small>17 September 2026</small></div>
+    <div class="report">
+      <div class="report-top"><div class="brand dark-brand"><span class="mark">7</span><span><b>7 GEMS</b><small>LABORATORY</small></span></div><div><b>Gemstone Identification Report</b><small>Report No.: <strong id="shownNo">7GL-2026-000123</strong></small></div><div class="qr">▦</div></div>
+      <h3>RESULTS</h3>
+      <div class="report-grid">
+        <div class="facts">
+          <p><span>Stone</span><b>Natural Emerald</b></p>
+          <p><span>Variety</span><b>Emerald</b></p>
+          <p><span>Shape / Cut</span><b>Square Step Cut</b></p>
+          <p><span>Weight</span><b>4.40 ct</b></p>
+          <p><span>Measurements</span><b>10.58 × 8.90 × 4.64 mm</b></p>
+          <p><span>Colour</span><b>Green</b></p>
+          <p><span>RI (Refractive Index)</span><b>1.577 – 1.584</b></p>
+          <p><span>SG (Specific Gravity)</span><b>2.72</b></p>
+          <p><span>Treatment</span><b>As stated on report</b></p>
+        </div>
+        <div class="stone-image"><div class="emerald"></div><small>Photo for identification reference</small></div>
+      </div>
+      <div class="signature"><span>Authorized Signatory<br><b>7 Gems Laboratory</b></span><div class="seal">7 GEMS<br><small>VERIFIED</small></div><span>This report has been issued<br>by 7 Gems Laboratory.</span></div>
+      <div class="note"><b>Important Note</b><br>This online result is a verification reference. The original laboratory report remains the primary document. Any alteration or modification invalidates this report.</div>
+    </div>
+  </section>
+  <div class="back"><a href="index.html">← Back to Home</a></div>
+</main>
+<script>
+document.getElementById('verifyForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const input=document.getElementById('reportNo'), result=document.getElementById('result');
+  const value=input.value.trim().toUpperCase();
+  if(value === '7GL-2026-000123'){
+    document.getElementById('shownNo').textContent=value;
+    result.classList.remove('not-found'); result.classList.add('verified');
+    result.scrollIntoView({behavior:'smooth', block:'start'});
+  } else {
+    result.classList.remove('verified'); result.classList.add('not-found');
+    result.querySelector('.result-head span').textContent='✕ Report Not Found';
+    result.querySelector('.result-head small').textContent='Please check the report number';
+    result.querySelector('.report').style.display='none';
+    result.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+});
+</script>
+</body></html>
