@@ -7,7 +7,7 @@
 <body>
 <header class="header">
   <a class="brand" href="index.html"><span class="mark">7</span><span><b>7 GEMS</b><small>LABORATORY</small></span></a>
-  <nav><a href="index.html">Home</a><a href="index.html#about">About Us</a><a href="index.html#services">Services</a><a class="active" href="verify.html">Report Verification</a></nav>
+  <nav><a href="index.html">Home</a><a href="index.html#about">About Us</a><a href="index.html#services">Services</a><a class="active" href="verify.html">Report Verification</a><a href="admin.html">Admin</a></nav>
   <a class="outline-btn" href="index.html#contact">Contact</a>
 </header>
 
@@ -46,21 +46,12 @@
   <div class="back"><a href="index.html">← Back to Home</a></div>
 </main>
 <script>
-document.getElementById('verifyForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const input=document.getElementById('reportNo'), result=document.getElementById('result');
-  const value=input.value.trim().toUpperCase();
-  if(value === '7GL-2026-000123'){
-    document.getElementById('shownNo').textContent=value;
-    result.classList.remove('not-found'); result.classList.add('verified');
-    result.scrollIntoView({behavior:'smooth', block:'start'});
-  } else {
-    result.classList.remove('verified'); result.classList.add('not-found');
-    result.querySelector('.result-head span').textContent='✕ Report Not Found';
-    result.querySelector('.result-head small').textContent='Please check the report number';
-    result.querySelector('.report').style.display='none';
-    result.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-});
+const DEMO={reportNo:'7GL-2026-000123',date:'17 September 2026',stoneName:'Natural Emerald',variety:'Emerald',shape:'Square Step Cut',weight:'4.40 ct',dimensions:'10.58 × 8.90 × 4.64 mm',colour:'Green',ri:'1.577 – 1.584',sg:'2.72',treatment:'As stated on report',origin:'',remarks:''};
+function reports(){return JSON.parse(localStorage.getItem('7gl_reports')||'[]')}
+function findReport(no){return no===DEMO.reportNo?DEMO:reports().find(r=>(r.reportNo||'').toUpperCase()===no)}
+function fill(r){document.getElementById('shownNo').textContent=r.reportNo;const vals=[r.stoneName||'-',r.variety||'-',r.shape||'-',r.weight||'-',r.dimensions||'-',r.colour||'-',r.ri||'-',r.sg||'-',r.treatment||'-'];document.querySelectorAll('.facts p b').forEach((b,i)=>b.textContent=vals[i]);document.querySelector('.result-head small').textContent=r.date||'Report verified'}
+function verifyValue(value){const result=document.getElementById('result');const report=findReport(value);result.querySelector('.report').style.display=report?'block':'none';if(report){result.classList.remove('not-found');result.classList.add('verified');result.querySelector('.result-head span').textContent='✓ Report Found & Verified';fill(report)}else{result.classList.remove('verified');result.classList.add('not-found');result.querySelector('.result-head span').textContent='✕ Report Not Found';result.querySelector('.result-head small').textContent='Please check the report number'}result.scrollIntoView({behavior:'smooth',block:'start'})}
+document.getElementById('verifyForm').addEventListener('submit',e=>{e.preventDefault();verifyValue(document.getElementById('reportNo').value.trim().toUpperCase())});
+const q=new URLSearchParams(location.search).get('report');if(q){document.getElementById('reportNo').value=q.toUpperCase();verifyValue(q.toUpperCase())}
 </script>
 </body></html>

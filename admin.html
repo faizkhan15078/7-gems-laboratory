@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin | 7 Gems Laboratory</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="header"><a class="brand" href="index.html"><span class="mark">7</span><span><b>7 GEMS</b><small>LABORATORY</small></span></a><nav><a href="index.html">Home</a><a href="index.html#about">About Us</a><a href="index.html#services">Services</a><a href="verify.html">Report Verification</a></nav><a class="outline-btn" href="index.html">Back Home</a></header>
+<section class="verify-hero"><p class="eyebrow">7 GEMS LABORATORY</p><h1>Admin Panel</h1><p>Create and manage gemstone reports.</p></section>
+<main class="verify-wrap">
+<section class="search-box" style="display:block"><h2>New Gemstone Report</h2><p>Reports are saved in this browser for testing.</p>
+<form id="form" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px">
+<label>Report Number<input id="reportNo" required></label><label>Date<input id="date" type="date" required></label><label>Stone Name<input id="stoneName"></label><label>Variety / Species<input id="variety"></label><label>Shape / Cut<input id="shape"></label><label>Weight<input id="weight" placeholder="e.g. 4.40 ct"></label><label>Dimensions<input id="dimensions" placeholder="10.58 × 8.90 × 4.64 mm"></label><label>Colour<input id="colour"></label><label>RI<input id="ri"></label><label>SG<input id="sg"></label><label>Treatment<input id="treatment"></label><label>Origin<input id="origin"></label><label style="grid-column:1/-1">Remarks<textarea id="remarks" rows="4"></textarea></label>
+<div style="grid-column:1/-1;display:flex;gap:10px"><button class="gold-btn" type="submit">Save Report</button><button class="outline-btn" type="button" onclick="resetForm()">Clear</button></div>
+</form></section>
+<section class="search-box" style="display:block;margin-top:25px"><h2>Saved Reports</h2><div id="list"></div></section>
+</main>
+<footer><div class="brand"><span class="mark">7</span><span><b>7 GEMS</b><small>LABORATORY</small></span></div><p>Gemstone Identification • Testing • Certification</p><small>© 2026 7 Gems Laboratory. All rights reserved.</small></footer>
+<script>
+const KEY='7gl_reports';const $=id=>document.getElementById(id);const get=()=>JSON.parse(localStorage.getItem(KEY)||'[]');const put=x=>localStorage.setItem(KEY,JSON.stringify(x));
+function nextNo(){const y=new Date().getFullYear();let n=123;get().forEach(r=>{const m=(r.reportNo||'').match(/(\d+)$/);if(m)n=Math.max(n,+m[1])});return `7GL-${y}-${String(n+1).padStart(6,'0')}`}
+function resetForm(){$('form').reset();$('reportNo').value=nextNo();$('date').value=new Date().toISOString().slice(0,10)}
+function render(){const rs=get();$('list').innerHTML=rs.length?rs.map((r,i)=>`<div style="border-top:1px solid #ddd;padding:12px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><b>${r.reportNo}</b><span>${r.stoneName||''}</span><a href="verify.html?report=${encodeURIComponent(r.reportNo)}">View</a><button onclick="del(${i})">Delete</button></div>`).join(''):'<p>No reports saved yet.</p>'}
+function del(i){if(confirm('Delete this report?')){const r=get();r.splice(i,1);put(r);render()}}
+$('form').addEventListener('submit',e=>{e.preventDefault();const r={};['reportNo','date','stoneName','variety','shape','weight','dimensions','colour','ri','sg','treatment','origin','remarks'].forEach(k=>r[k]=$(k).value.trim());const rs=get();if(rs.some(x=>x.reportNo===r.reportNo)){alert('Report number already exists.');return}rs.push(r);put(rs);alert('Report saved successfully.');resetForm();render()});resetForm();render();
+</script></body></html>
